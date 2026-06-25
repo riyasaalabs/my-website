@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riyasaa Labs — AI • IoT • Sustainability</title>
+  <meta name="description" content="Riyasaa Labs builds AI and IoT solutions for energy management, smart buildings, solar analytics, and intelligent automation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Tamil:wght@300;400;600;700&family=Noto+Sans+Devanagari:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #0A0A0F;
+      --bg2:     #0D0D1A;
+      --bg3:     #10101F;
+      --primary: #4B5FFF;
+      --pglow:   rgba(75,95,255,0.35);
+      --secondary:#00D4FF;
+      --sglow:   rgba(0,212,255,0.35);
+      --accent:  #8B5CF6;
+      --aglow:   rgba(139,92,246,0.35);
+      --success: #00E676;
+      --text:    #FFFFFF;
+      --muted:   rgba(255,255,255,0.5);
+      --dim:     rgba(255,255,255,0.28);
+      --border:  rgba(255,255,255,0.07);
+      --radius:  14px;
+      --radius-lg:20px;
+      --ease:    0.24s cubic-bezier(0.4,0,0.2,1);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter','Noto Sans Tamil','Noto Sans Devanagari',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;overflow-x:hidden}
+
+    /* ── LANG BAR ── */
+    .lang-bar{background:rgba(10,10,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:7px 24px;display:flex;justify-content:flex-end;align-items:center;gap:10px;position:sticky;top:0;z-index:200}
+    .lang-bar span{color:var(--muted);font-size:12px;letter-spacing:.05em}
+    .lang-select-wrap{position:relative;display:flex;align-items:center}
+    .lang-select-wrap::after{content:'▾';position:absolute;right:10px;color:var(--muted);font-size:11px;pointer-events:none}
+    .lang-select{appearance:none;-webkit-appearance:none;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:4px 28px 4px 12px;border-radius:8px;font-size:12.5px;cursor:pointer;transition:var(--ease);font-family:inherit;outline:none}
+    .lang-select:hover,.lang-select:focus{border-color:var(--primary);color:#fff;box-shadow:0 0 12px var(--pglow);background:rgba(75,95,255,.12)}
+    .lang-select option{background:#0D0D1A;color:#fff}
+
+    /* ── NAV ── */
+    nav{background:rgba(10,10,15,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:35px;z-index:100;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:96px}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo img{filter:brightness(1.05)}
+    .nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+    .nav-links a{text-decoration:none;color:var(--muted);font-size:14px;font-weight:500;padding:7px 14px;border-radius:8px;transition:var(--ease)}
+    .nav-links a:hover{color:#fff;background:rgba(255,255,255,0.06)}
+    .nav-cta{background:linear-gradient(135deg,var(--primary),var(--accent))!important;color:#fff!important;box-shadow:0 0 18px var(--pglow)}
+    .nav-cta:hover{box-shadow:0 0 28px var(--pglow);transform:translateY(-1px)}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none}
+    .hamburger span{display:block;width:22px;height:2px;background:var(--muted);border-radius:2px;transition:var(--ease)}
+    .mobile-menu{display:none;flex-direction:column;background:rgba(10,10,20,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:12px 5vw 20px;position:fixed;top:131px;left:0;right:0;z-index:99;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+    .mobile-menu.open{display:flex}
+    .mobile-menu a{padding:13px 4px;color:var(--muted);text-decoration:none;font-size:15px;font-weight:500;border-bottom:1px solid var(--border)}
+    .mobile-menu a:last-child{border-bottom:none;color:var(--secondary)}
+
+    /* ── HERO ── */
+    .hero{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;padding:80px 5vw}
+    #neuralCanvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+    .hero-fog{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 70% 70% at 10% 50%,rgba(75,95,255,.1) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 90% 20%,rgba(139,92,246,.09) 0%,transparent 55%),radial-gradient(ellipse 40% 50% at 60% 90%,rgba(0,212,255,.07) 0%,transparent 50%);pointer-events:none}
+    .hero-inner{position:relative;z-index:2;width:100%;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(75,95,255,.12);border:1px solid rgba(75,95,255,.3);color:var(--secondary);padding:6px 16px;border-radius:999px;font-size:12.5px;font-weight:500;margin-bottom:28px;letter-spacing:.05em}
+    .hero-badge::before{content:'';width:7px;height:7px;background:var(--secondary);border-radius:50%;animation:dot-pulse 2s infinite;box-shadow:0 0 8px var(--secondary)}
+    @keyframes dot-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.6)}}
+
+    h1{font-size:clamp(2rem,4.5vw,3.7rem);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.03em;margin-bottom:22px}
+    .gt{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .gt2{background:linear-gradient(135deg,var(--accent),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-sub{font-size:1.05rem;color:var(--muted);max-width:510px;margin-bottom:36px;line-height:1.8}
+    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:var(--ease);cursor:pointer;border:none;font-family:inherit}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;box-shadow:0 4px 22px var(--pglow)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--pglow)}
+    .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(10px)}
+    .btn-outline:hover{border-color:var(--secondary);color:var(--secondary);box-shadow:0 0 18px rgba(0,212,255,.2)}
+
+    .hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+    .stat-num{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--secondary),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
+    .stat-lbl{font-size:11.5px;color:var(--dim);margin-top:2px;letter-spacing:.04em}
+
+    /* ── HERO VISUAL ── */
+    .hero-visual{position:relative;height:480px}
+    .fwidget{position:absolute;background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px 20px;min-width:165px}
+    .fw1{top:8%;right:0;animation:fl1 6s ease-in-out infinite;border-color:rgba(75,95,255,.3);box-shadow:0 0 30px rgba(75,95,255,.1)}
+    .fw2{top:44%;left:0;animation:fl2 7s ease-in-out infinite;border-color:rgba(0,212,255,.3);box-shadow:0 0 30px rgba(0,212,255,.1)}
+    .fw3{bottom:8%;right:8%;animation:fl3 5.5s ease-in-out infinite;border-color:rgba(139,92,246,.3);box-shadow:0 0 30px rgba(139,92,246,.1)}
+    @keyframes fl1{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+    @keyframes fl2{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+    @keyframes fl3{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .wlabel{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+    .wval{font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:-.02em}
+    .wsub{font-size:11px;margin-top:3px}
+    .solar-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+
+    /* progress bar anim */
+    @keyframes pfill{from{width:0}}
+    @keyframes toastIn{from{transform:translateX(calc(100% + 32px));opacity:0}to{transform:translateX(0);opacity:1}}
+
+    /* inline field error */
+    .field-err{font-size:11.5px;color:#f87171;margin-top:4px;display:none}
+    .field-err.show{display:block}
+    input.err,select.err,textarea.err{border-color:#f87171!important;box-shadow:0 0 0 3px rgba(248,113,113,.15)!important}
+
+    /* ── SECTION BASE ── */
+    section{padding:96px 5vw}
+    .inner{max-width:1100px;margin:0 auto}
+    .stag{display:inline-flex;align-items:center;gap:6px;background:rgba(75,95,255,.1);border:1px solid rgba(75,95,255,.25);color:var(--secondary);font-size:11px;font-weight:600;padding:4px 13px;border-radius:999px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+    h2{font-size:clamp(1.7rem,3vw,2.5rem);font-weight:800;letter-spacing:-.025em;line-height:1.15;color:#fff}
+    .shdr{text-align:center;max-width:600px;margin:0 auto 56px}
+    .shdr p{color:var(--muted);margin-top:14px;font-size:1rem}
+
+    /* ── GLASS CARD ── */
+    .gc{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px 28px;transition:var(--ease);position:relative;overflow:hidden}
+    .gc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(75,95,255,.06) 0%,transparent 60%);opacity:0;transition:var(--ease);pointer-events:none}
+    .gc:hover{border-color:rgba(75,95,255,.35);box-shadow:0 0 40px rgba(75,95,255,.1),0 20px 60px rgba(0,0,0,.3);transform:translateY(-4px)}
+    .gc:hover::before{opacity:1}
+
+    /* ── SOLUTIONS ── */
+    #solutions{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
+    .sol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+    .ibox{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:20px}
+    .ib1{background:rgba(75,95,255,.15);box-shadow:0 0 20px rgba(75,95,255,.2)}
+    .ib2{background:rgba(0,212,255,.12);box-shadow:0 0 20px rgba(0,212,255,.15)}
+    .ib3{background:rgba(139,92,246,.12);box-shadow:0 0 20px rgba(139,92,246,.15)}
+    .gc h3{font-size:1.15rem;font-weight:700;margin-bottom:10px;color:#fff}
+    .gc p{color:var(--muted);font-size:.92rem;margin-bottom:18px;line-height:1.7}
+    .flist{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+    .flist li{font-size:.875rem;color:rgba(255,255,255,.58);display:flex;align-items:center;gap:8px}
+    .flist li::before{content:'';width:5px;height:5px;background:var(--secondary);border-radius:50%;flex-shrink:0;box-shadow:0 0 6px var(--secondary)}
+    .pills{display:flex;flex-wrap:wrap;gap:7px}
+    .pill{background:rgba(75,95,255,.1);color:var(--secondary);border:1px solid rgba(75,95,255,.22);padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:500}
+    .pill2{background:rgba(0,212,255,.08);color:var(--secondary);border-color:rgba(0,212,255,.25)}
+    .pill3{background:rgba(139,92,246,.08);color:var(--accent);border-color:rgba(139,92,246,.25)}
+
+    /* solar production bars */
+    .sol-bars{display:flex;gap:4px;align-items:flex-end;height:60px;margin:14px 0}
+    .sol-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:.85;animation:bg 2s ease-out forwards}
+    @keyframes bg{from{height:0!important}}
+
+    /* ── PRODUCTS (redesigned) ── */
+    #products{background:var(--bg2)}
+    .prod-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;justify-content:center}
+    .ptab{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);padding:11px 28px;border-radius:999px;font-size:14.5px;font-weight:600;cursor:pointer;transition:var(--ease);font-family:inherit}
+    .ptab.active,.ptab:hover{background:linear-gradient(135deg,var(--primary),var(--accent));border-color:transparent;color:#fff;box-shadow:0 0 22px var(--pglow)}
+    .prod-panel{display:none}
+    .prod-panel.active{display:block;animation:panelIn .35s ease}
+    @keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .prod-layout{display:grid;grid-template-columns:1fr 1.75fr;gap:52px;align-items:start}
+    .prod-img-wrap{border-radius:18px;overflow:hidden;margin-bottom:28px;border:1px solid var(--border)}
+    .prod-img{width:100%;height:290px;object-fit:cover;display:block}
+    .prod-left>h3{font-size:1.55rem;font-weight:800;color:#fff;margin-bottom:14px;letter-spacing:-.02em}
+    .prod-desc{color:var(--muted);font-size:.95rem;line-height:1.8;border-left:3px solid var(--primary);padding-left:18px}
+    .prod-right{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .prod-cat-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:16px;padding:22px 20px;transition:var(--ease)}
+    .prod-cat-card:hover{border-color:rgba(75,95,255,.4);box-shadow:0 0 32px rgba(75,95,255,.1),0 10px 36px rgba(0,0,0,.25);transform:translateY(-3px)}
+    .prod-cat-wide{grid-column:1/-1}
+    .prod-cat-title{font-size:.72rem;font-weight:700;color:var(--secondary);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}
+    .prod-features{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .prod-features li{font-size:.85rem;color:rgba(255,255,255,.55);display:flex;align-items:flex-start;gap:9px;line-height:1.55}
+    .prod-features li::before{content:'✓';color:var(--primary);font-weight:700;font-size:.85rem;flex-shrink:0;margin-top:2px}
+    .prod-features li strong{color:rgba(255,255,255,.85);font-weight:600;display:block;font-size:.875rem;margin-bottom:1px}
+    .msme-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.25);color:var(--secondary);padding:5px 15px;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.04em;margin-top:18px}
+
+    /* ── ACADEMY ── */
+    #academy{background:var(--bg)}
+    .tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+    .tbtn{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);padding:9px 20px;border-radius:999px;font-size:13.5px;font-weight:500;cursor:pointer;transition:var(--ease);font-family:inherit}
+    .tbtn.active,.tbtn:hover{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 0 18px var(--pglow)}
+    .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+    .ccard{display:flex;flex-direction:column}
+    .cemoji{font-size:1.8rem;margin-bottom:12px}
+    .ctag{display:inline-flex;background:rgba(75,95,255,.1);color:var(--secondary);border:1px solid rgba(75,95,255,.2);font-size:10.5px;font-weight:600;padding:2px 9px;border-radius:999px;margin-bottom:10px;letter-spacing:.05em;text-transform:uppercase}
+    .ccard h3{font-size:1rem;font-weight:700;margin-bottom:8px;color:#fff}
+    .ccard p{color:var(--muted);font-size:.875rem;margin-bottom:14px;flex:1;line-height:1.65}
+    .ctopics{list-style:none;display:flex;flex-direction:column;gap:5px;margin-bottom:20px}
+    .ctopics li{font-size:.82rem;color:rgba(255,255,255,.5);display:flex;gap:7px;align-items:center}
+    .ctopics li::before{content:'›';color:var(--accent);font-weight:700;font-size:1rem}
+    .benroll{background:rgba(75,95,255,.15);color:var(--secondary);border:1px solid rgba(75,95,255,.3);padding:10px 18px;border-radius:8px;font-size:13.5px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:var(--ease);width:fit-content;font-family:inherit}
+    .benroll:hover{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 0 18px var(--pglow)}
+    .chours{display:inline-flex;align-items:center;gap:5px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);color:var(--accent);padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:600;letter-spacing:.04em;margin-bottom:10px}
+
+    /* ── REGISTER ── */
+    #register{background:var(--bg2)}
+    .reg-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+    .reg-info h3{font-size:1.2rem;font-weight:700;margin-bottom:16px;color:#fff}
+    .steps{display:flex;flex-direction:column;gap:16px;margin-top:20px}
+    .step{display:flex;gap:14px;align-items:flex-start}
+    .snum{width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;box-shadow:0 0 14px var(--pglow)}
+    .stxt{font-size:.875rem;color:var(--muted);padding-top:4px}
+
+    form{display:flex;flex-direction:column;gap:14px}
+    label{font-size:13px;font-weight:600;color:rgba(255,255,255,.55);margin-bottom:4px;display:block}
+    input,select,textarea{width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,.1);border-radius:9px;font-size:14px;font-family:inherit;color:#fff;background:rgba(255,255,255,.04);transition:var(--ease);outline:none}
+    input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(75,95,255,.15);background:rgba(75,95,255,.05)}
+    input::placeholder,textarea::placeholder{color:rgba(255,255,255,.22)}
+    select option{background:#12121e}
+    textarea{resize:vertical;min-height:90px}
+    .fgrp{display:flex;flex-direction:column}
+    .bsub{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:var(--ease);box-shadow:0 4px 18px var(--pglow)}
+    .bsub:hover{box-shadow:0 8px 28px var(--pglow);transform:translateY(-1px)}
+
+    /* ── WHY ── */
+    #why{background:var(--bg)}
+    .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;max-width:960px;margin:0 auto}
+    .wcard{text-align:center}
+    .wicon{font-size:1.8rem;margin-bottom:14px;display:block}
+    .wcard h3{color:#fff;font-size:1rem;font-weight:700;margin-bottom:8px}
+    .wcard p{color:var(--muted);font-size:.875rem;line-height:1.65}
+
+    /* ── CONTACT ── */
+    #contact{background:var(--bg2)}
+    .con-wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:start}
+    .con-info h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;color:#fff}
+    .con-info>p{color:var(--muted);font-size:.92rem;margin-bottom:28px}
+    .cdet{display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:.875rem;color:var(--muted)}
+    .cdet-ico{width:38px;height:38px;background:rgba(75,95,255,.12);border:1px solid rgba(75,95,255,.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+    .cdet a{color:var(--secondary);text-decoration:none;font-weight:500}
+    .cdet a:hover{text-shadow:0 0 10px var(--sglow)}
+    .spills{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px}
+    .spill{background:rgba(255,255,255,.04);border:1px solid var(--border);color:rgba(255,255,255,.5);padding:4px 11px;border-radius:999px;font-size:11.5px;font-weight:500}
+
+    /* ── FOOTER ── */
+    footer{background:#050508;border-top:1px solid var(--border);color:var(--dim);text-align:center;padding:30px 24px;font-size:13px}
+    footer a{color:var(--secondary);text-decoration:none}
+    footer strong{color:rgba(255,255,255,.7)}
+
+    /* ── REVEAL ── */
+    .rv{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+    .rv.vis{opacity:1;transform:translateY(0)}
+
+    /* ── HVAC BARS (Buildings card) ── */
+    .hvac-bars{display:flex;gap:4px;align-items:flex-end;height:60px;margin:14px 0}
+    .hvac-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--secondary),rgba(0,212,255,.28));opacity:.88;animation:bg 2s ease-out forwards}
+
+    /* ── MODE TOGGLE ── */
+    .lang-side{display:flex;align-items:center;gap:6px}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:960px){.prod-layout{grid-template-columns:1fr}}
+    @media(max-width:600px){.prod-right{grid-template-columns:1fr}.prod-cat-wide{grid-column:auto}}
+    @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-visual{display:none}.reg-wrap,.con-wrap{grid-template-columns:1fr}}
+    @media(max-width:700px){nav{padding:0 4vw}.nav-links{display:none}.hamburger{display:flex}section{padding:64px 5vw}}
+    @media(max-width:480px){h1{font-size:1.9rem}}
+  </style>
+</head>
+<body>
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <span>🌐 Language</span>
+  <div class="lang-select-wrap">
+    <select class="lang-select" id="langSelect" onchange="setLang(this.value)">
+      <option value="en">English</option>
+      <option value="ta">தமிழ்</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#home" class="logo">
+    <img src="images/riyasaa.png" alt="Riyasaa Labs" style="height:80px;width:auto;display:block">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#solutions" data-i18n="nav_solutions">Solutions</a></li>
+    <li><a href="#products" data-i18n="nav_products">Products</a></li>
+    <li><a href="#academy" data-i18n="nav_academy">Academy</a></li>
+    <li><a href="#why" data-i18n="nav_why">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta" data-i18n="nav_contact">Contact Us</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#solutions" onclick="toggleMenu()" data-i18n="nav_solutions">Solutions</a>
+  <a href="#products" onclick="toggleMenu()" data-i18n="nav_products">Products</a>
+  <a href="#academy" onclick="toggleMenu()" data-i18n="nav_academy">Academy</a>
+  <a href="#why" onclick="toggleMenu()" data-i18n="nav_why">Why Us</a>
+  <a href="#register" onclick="toggleMenu()" data-i18n="nav_register">Register</a>
+  <a href="#contact" onclick="toggleMenu()" data-i18n="nav_contact">Contact Us</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <canvas id="neuralCanvas"></canvas>
+  <div class="hero-fog"></div>
+  <div class="hero-inner">
+
+    <div class="hero-content">
+      <div class="hero-badge" data-i18n="hero_badge">AI • IoT • Sustainability • Automation</div>
+      <h1>
+        <span data-i18n="hero_h1a">Building a</span>
+        <span class="gt" data-i18n="hero_h1b"> Smarter</span><br/>
+        <span class="gt2" data-i18n="hero_h1c">Sustainable </span><span data-i18n="hero_h1d">Future</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero_sub">Technology-driven solutions that help businesses optimize energy, reduce carbon emissions, and accelerate their Net Zero journey.</p>
+      <div class="hero-actions">
+        <a href="#solutions" class="btn btn-primary" data-i18n="hero_cta1">Explore Solutions</a>
+        <a href="#contact" class="btn btn-outline" data-i18n="hero_cta2">Talk to Us</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">3+</div><div class="stat-lbl" data-i18n="stat1">Core Solutions</div></div>
+        <div><div class="stat-num">8+</div><div class="stat-lbl" data-i18n="stat2">Industries</div></div>
+        <div><div class="stat-num">6+</div><div class="stat-lbl" data-i18n="stat3">Courses</div></div>
+      </div>
+      <div><span class="msme-tag">🏛️ MSME Registered</span></div>
+    </div>
+
+    <!-- Right: floating energy dashboard + solar animation -->
+    <div class="hero-visual">
+      <!-- Widget 1: energy line chart -->
+      <div class="fwidget fw1">
+        <div class="wlabel">⚡ Energy Output</div>
+        <div class="wval">847 kWh</div>
+        <div class="wsub" style="color:var(--success)">↑ 12.4% today</div>
+        <canvas id="echart" width="130" height="40" style="margin-top:10px;display:block"></canvas>
+      </div>
+
+      <!-- Solar animation -->
+      <div class="solar-center">
+        <canvas id="solarCanvas" width="200" height="200"></canvas>
+      </div>
+
+      <!-- Widget 2: building efficiency -->
+      <div class="fwidget fw2">
+        <div class="wlabel">🏢 Building Efficiency</div>
+        <div class="wval">94.2%</div>
+        <div class="wsub" style="color:var(--secondary)">Optimal range</div>
+        <div style="margin-top:10px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden">
+          <div style="width:94%;height:100%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:2px;animation:pfill 2s ease-out"></div>
+        </div>
+      </div>
+
+      <!-- Widget 3: CO2 -->
+      <div class="fwidget fw3">
+        <div class="wlabel">🌱 CO₂ Reduced</div>
+        <div class="wval">2.4t</div>
+        <div class="wsub" style="color:var(--accent)">This month</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section id="solutions">
+  <div class="inner">
+    <div class="shdr rv">
+      <div class="stag" data-i18n="sol_tag">Our Solutions</div>
+      <h2 data-i18n="sol_h2">Intelligent Technology for Every Challenge</h2>
+      <p data-i18n="sol_p">From solar analytics to smart buildings — AI, IoT, and deep domain expertise combined.</p>
+    </div>
+    <div class="sol-grid">
+
+      <div class="gc rv">
+        <div class="ibox ib1">☀️</div>
+        <h3 data-i18n="s1_h3">AI for Solar</h3>
+        <p data-i18n="s1_p">Transform solar operations with intelligent monitoring, predictive analytics, and automated insights.</p>
+        <!-- Animated solar production bars -->
+        <div class="sol-bars" id="solBars">
+          <div class="sol-bar" style="height:45%;animation-delay:.0s"></div>
+          <div class="sol-bar" style="height:62%;animation-delay:.08s"></div>
+          <div class="sol-bar" style="height:78%;animation-delay:.16s"></div>
+          <div class="sol-bar" style="height:91%;animation-delay:.24s"></div>
+          <div class="sol-bar" style="height:74%;animation-delay:.32s"></div>
+          <div class="sol-bar" style="height:85%;animation-delay:.40s"></div>
+          <div class="sol-bar" style="height:96%;animation-delay:.48s;background:linear-gradient(180deg,var(--secondary),var(--primary))"></div>
+          <div class="sol-bar" style="height:80%;animation-delay:.56s;background:linear-gradient(180deg,var(--secondary),var(--primary))"></div>
+        </div>
+        <ul class="flist">
+          <li data-i18n="s1_f1">Real-time solar plant monitoring</li>
+          <li data-i18n="s1_f2">AI-powered fault detection</li>
+          <li data-i18n="s1_f3">Energy yield forecasting</li>
+          <li data-i18n="s1_f4">Predictive maintenance</li>
+          <li data-i18n="s1_f5">Automated reporting &amp; alerts</li>
+        </ul>
+        <div class="pills">
+          <span class="pill" data-i18n="s1_b1">↑ Production</span>
+          <span class="pill" data-i18n="s1_b2">↓ Downtime</span>
+          <span class="pill" data-i18n="s1_b3">Max ROI</span>
+        </div>
+      </div>
+
+      <div class="gc rv">
+        <div class="ibox ib2">🏢</div>
+        <h3 data-i18n="s2_h3">AI for Buildings</h3>
+        <p data-i18n="s2_p">Create intelligent, energy-efficient buildings through automation and advanced analytics.</p>
+        <!-- HVAC energy optimisation bars -->
+        <div class="hvac-bars">
+          <div class="hvac-bar" style="height:72%;animation-delay:.0s"></div>
+          <div class="hvac-bar" style="height:55%;animation-delay:.08s"></div>
+          <div class="hvac-bar" style="height:40%;animation-delay:.16s"></div>
+          <div class="hvac-bar" style="height:36%;animation-delay:.24s"></div>
+          <div class="hvac-bar" style="height:44%;animation-delay:.32s"></div>
+          <div class="hvac-bar" style="height:70%;animation-delay:.40s"></div>
+          <div class="hvac-bar" style="height:82%;animation-delay:.48s;background:linear-gradient(180deg,var(--secondary),rgba(0,212,255,.5))"></div>
+          <div class="hvac-bar" style="height:30%;animation-delay:.56s;background:linear-gradient(180deg,var(--secondary),rgba(0,212,255,.5))"></div>
+        </div>
+        <ul class="flist">
+          <li data-i18n="s2_f1">Smart Building Management Systems</li>
+          <li data-i18n="s2_f2">HVAC optimization</li>
+          <li data-i18n="s2_f3">Occupancy-based control</li>
+          <li data-i18n="s2_f4">Energy consumption analytics</li>
+          <li data-i18n="s2_f5">Sustainability dashboards</li>
+        </ul>
+        <div class="pills">
+          <span class="pill pill2" data-i18n="s2_b1">↓ Energy Costs</span>
+          <span class="pill pill2" data-i18n="s2_b2">ESG Support</span>
+          <span class="pill pill2" data-i18n="s2_b3">Net Zero</span>
+        </div>
+      </div>
+
+      <div class="gc rv">
+        <div class="ibox ib3">🤖</div>
+        <h3 data-i18n="s3_h3">AI Consultancy</h3>
+        <p data-i18n="s3_p">Helping organizations unlock the full power of Artificial Intelligence — from strategy to deployment.</p>
+        <!-- AI neural connection animation -->
+        <canvas id="aiNetCanvas" width="280" height="65" style="width:100%;margin:14px 0;border-radius:8px;display:block"></canvas>
+        <ul class="flist">
+          <li data-i18n="s3_f1">AI Strategy &amp; Roadmap</li>
+          <li data-i18n="s3_f2">Custom AI Agent Development</li>
+          <li data-i18n="s3_f3">Generative AI Solutions</li>
+          <li data-i18n="s3_f4">Workflow Automation</li>
+          <li data-i18n="s3_f5">LLM Fine-Tuning &amp; RAG</li>
+        </ul>
+        <div class="pills">
+          <span class="pill pill3" data-i18n="s3_b1">Energy &amp; Utilities</span>
+          <span class="pill pill3" data-i18n="s3_b2">Manufacturing</span>
+          <span class="pill pill3" data-i18n="s3_b3">Healthcare</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="inner">
+    <div class="shdr rv">
+      <div class="stag" data-i18n="prod_tag">Our Products</div>
+      <h2 data-i18n="prod_h2">Purpose-Built AI Platforms</h2>
+      <p data-i18n="prod_p">Ready-to-deploy intelligent platforms powered by AI — for real-world industrial and commercial environments.</p>
+    </div>
+
+    <div class="prod-tabs rv">
+      <button class="ptab active" onclick="showProduct(0,this)">🛗 &nbsp;Lift Monitoring</button>
+      <button class="ptab" onclick="showProduct(1,this)">⚡ &nbsp;Solar Energy</button>
+      <button class="ptab" onclick="showProduct(2,this)">🏗️ &nbsp;Smart Buildings</button>
+    </div>
+
+    <!-- PANEL 0: Lift Monitoring -->
+    <div class="prod-panel active" id="ppanel-0">
+      <div class="prod-layout">
+        <div class="prod-left">
+          <div class="prod-img-wrap">
+            <img src="images/lift.png" alt="Intelligent Lift Monitoring" class="prod-img">
+          </div>
+          <h3 data-i18n="p1_h3">Intelligent Lift Monitoring</h3>
+          <p class="prod-desc" data-i18n="p1_p">AI-powered predictive maintenance and real-time operational analytics for elevators — reducing downtime and maintenance costs through machine learning and IoT sensor data.</p>
+        </div>
+        <div class="prod-right">
+          <div class="prod-cat-card">
+            <div class="prod-cat-title">📡 &nbsp;Real-time Monitoring</div>
+            <ul class="prod-features">
+              <li><strong>Live Sensor Data Streams</strong>Continuous feed from IoT edge sensors on motors, doors, and cabins.</li>
+              <li><strong>Instant Fault Alerts</strong>Automated notifications for anomalies and equipment faults as they occur.</li>
+              <li><strong>Floor-by-Floor Visibility</strong>Granular status tracking across every floor, shaft, and system component.</li>
+            </ul>
+          </div>
+          <div class="prod-cat-card">
+            <div class="prod-cat-title">🤖 &nbsp;AI Predictive Analytics</div>
+            <ul class="prod-features">
+              <li><strong>ML-Based Fault Prediction</strong>Machine learning models trained on historical lift operational patterns.</li>
+              <li><strong>Remaining Useful Life</strong>AI estimates component health to act before a failure occurs.</li>
+              <li><strong>Automated Maintenance Scheduling</strong>AI-optimized work orders dispatched to maximize uptime.</li>
+            </ul>
+          </div>
+          <div class="prod-cat-card prod-cat-wide">
+            <div class="prod-cat-title">🌐 &nbsp;Remote Management & Reporting</div>
+            <ul class="prod-features" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+              <li><strong>Multi-site Fleet Dashboard</strong>Manage hundreds of lifts from a single cloud interface.</li>
+              <li><strong>Mobile-ready Control</strong>Monitor and act from any device, anywhere in the world.</li>
+              <li><strong>Historical Performance Reports</strong>Detailed logs and audit trails for compliance and planning.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 1: Solar Energy -->
+    <div class="prod-panel" id="ppanel-1">
+      <div class="prod-layout">
+        <div class="prod-left">
+          <div class="prod-img-wrap">
+            <img src="images/solar.jpeg" alt="Renewable Energy Monitor" class="prod-img">
+          </div>
+          <h3 data-i18n="p2_h3">Renewable Energy Monitor</h3>
+          <p class="prod-desc" data-i18n="p2_p">AI-driven solar analytics platform for solar PV, energy storage, and microgrids — maximize yield with intelligent forecasting, automated fault detection, and portfolio management.</p>
+        </div>
+        <div class="prod-right">
+          <div class="prod-cat-card">
+            <div class="prod-cat-title">☀️ &nbsp;Solar Performance</div>
+            <ul class="prod-features">
+              <li><strong>Real-time Generation Monitoring</strong>Plant-level and string-level power output tracking.</li>
+              <li><strong>Inverter & String Analytics</strong>Deep diagnostics for every inverter and string in the array.</li>
+              <li><strong>Yield vs. Irradiance</strong>Compare actual vs. expected output using live weather data.</li>
+            </ul>
+          </div>
+          <div class="prod-cat-card">
+            <div class="prod-cat-title">🤖 &nbsp;AI Analytics & Forecasting</div>
+            <ul class="prod-features">
+              <li><strong>AI Fault Detection</strong>Automatic identification of shading, soiling, and equipment failures.</li>
+              <li><strong>Energy Yield Forecasting</strong>ML predictions for next-day and weekly generation output.</li>
+              <li><strong>Automated Alerts & Reports</strong>Scheduled performance reports and real-time threshold alerts.</li>
+            </ul>
+          </div>
+          <div class="prod-cat-card prod-cat-wide">
+            <div class="prod-cat-title">🔋 &nbsp;Energy Storage & Microgrid Control</div>
+            <ul class="prod-features" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+              <li><strong>Battery State-of-Charge</strong>Real-time battery health and SOC monitoring for storage systems.</li>
+              <li><strong>Microgrid Balancing</strong>Intelligent control for both grid-tied and off-grid deployments.</li>
+              <li><strong>Portfolio Management</strong>Manage multiple solar sites from a unified cloud dashboard.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: Smart Buildings -->
+    <div class="prod-panel" id="ppanel-2">
+      <div class="prod-layout">
+        <div class="prod-left">
+          <div class="prod-img-wrap">
+            <img src="images/buildings.jpeg" alt="Smart Building Control" class="prod-img">
+          </div>
+          <h3 data-i18n="p3_h3">Smart Building Control</h3>
+          <p class="prod-desc" data-i18n="p3_p">AI-enabled integrated platform for energy optimization, building automation, and sustainability reporting — powered by real-time IoT data and machine learning to cut costs and hit Net Zero targets.</p>
+        </div>
+        <div class="prod-right">
+          <div class="prod-cat-card">
+            <div class="prod-cat-title">🏢 &nbsp;Building Automation</div>
+            <ul class="prod-features">
+              <li><strong>Smart HVAC Optimization</strong>AI-driven climate control to eliminate energy waste in real time.</li>
+              <li><strong>Occupancy-based Lighting</strong>Automated lighting controlled by real-time occupancy sensor data.</li>
+              <li><strong>Intelligent Access Control</strong>Smart entry systems integrated with building management.</li>
+            </ul>
+          </div>
+          <div class="prod-cat-card">
+            <div class="prod-cat-title">🤖 &nbsp;AI Energy Intelligence</div>
+            <ul class="prod-features">
+              <li><strong>Energy Anomaly Detection</strong>AI instantly identifies unusual consumption patterns across zones.</li>
+              <li><strong>Consumption Pattern Analysis</strong>Understand usage trends by zone, system, and time-of-day.</li>
+              <li><strong>Demand Forecasting</strong>Predict peak loads and optimize energy procurement decisions.</li>
+            </ul>
+          </div>
+          <div class="prod-cat-card prod-cat-wide">
+            <div class="prod-cat-title">🌱 &nbsp;Sustainability & ESG Reporting</div>
+            <ul class="prod-features" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+              <li><strong>Real-time ESG Dashboards</strong>Live sustainability KPIs for management and stakeholders.</li>
+              <li><strong>Carbon Footprint Tracking</strong>Scope 1, 2, and 3 emissions monitored and reported automatically.</li>
+              <li><strong>Net Zero Progress Reports</strong>Track and share your decarbonization journey with transparency.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACADEMY -->
+<section id="academy">
+  <div class="inner">
+    <div class="shdr rv">
+      <div class="stag" data-i18n="acad_tag">Riyasaa Academy</div>
+      <h2 data-i18n="acad_h2">Empowering Professionals with Future-Ready Skills</h2>
+      <p data-i18n="acad_p">Practical, industry-focused training in AI, IoT, and Digital Transformation.</p>
+    </div>
+    <div class="tabs">
+      <button class="tbtn active" onclick="filterCourses('all',event)" data-i18n="tab_all">All Courses</button>
+      <button class="tbtn" onclick="filterCourses('ai',event)" data-i18n="tab_ai">Artificial Intelligence</button>
+      <button class="tbtn" onclick="filterCourses('iot',event)" data-i18n="tab_iot">Internet of Things</button>
+    </div>
+    <div class="cgrid" id="cgrid">
+
+      <!-- MCP for Beginners — 8 hrs -->
+      <div class="gc ccard rv" data-category="ai">
+        <div class="cemoji">🤖</div>
+        <span class="ctag" data-i18n="ctag_ai">AI Course</span>
+        <div><span class="chours">⏱ 8 Hours</span></div>
+        <h3 data-i18n="c2_h3">MCP for Beginners</h3>
+        <p data-i18n="c2_p">Learn the Model Context Protocol and build next-generation AI integrations.</p>
+        <ul class="ctopics">
+          <li data-i18n="c2_t1">MCP Fundamentals</li>
+          <li data-i18n="c2_t2">MCP Architecture</li>
+          <li data-i18n="c2_t3">Connecting AI Tools</li>
+          <li data-i18n="c2_t4">Context-Aware Agents</li>
+          <li data-i18n="c2_t5">Real-World Applications</li>
+        </ul>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="benroll" data-i18n="btn_enroll">Enroll Now →</a>
+      </div>
+
+      <!-- n8n — 16 hrs -->
+      <div class="gc ccard rv" data-category="ai">
+        <div class="cemoji">🚀</div>
+        <span class="ctag" data-i18n="ctag_ai">AI Course</span>
+        <div><span class="chours">⏱ 16 Hours</span></div>
+        <h3 data-i18n="c1_h3">n8n – All You Need to Know</h3>
+        <p data-i18n="c1_p">Master workflow automation without complex coding using n8n.</p>
+        <ul class="ctopics">
+          <li data-i18n="c1_t1">Introduction to n8n</li>
+          <li data-i18n="c1_t2">Building Automation Workflows</li>
+          <li data-i18n="c1_t3">API Integrations</li>
+          <li data-i18n="c1_t4">AI-Powered Automation</li>
+          <li data-i18n="c1_t5">Production Deployment</li>
+        </ul>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="benroll" data-i18n="btn_enroll">Enroll Now →</a>
+      </div>
+
+      <!-- Building AI Agents — 30 hrs -->
+      <div class="gc ccard rv" data-category="ai">
+        <div class="cemoji">🧠</div>
+        <span class="ctag" data-i18n="ctag_ai">AI Course</span>
+        <div><span class="chours">⏱ 30 Hours</span></div>
+        <h3 data-i18n="c3_h3">Building AI Agents</h3>
+        <p data-i18n="c3_p">Create intelligent AI agents capable of reasoning, planning, and taking actions.</p>
+        <ul class="ctopics">
+          <li data-i18n="c3_t1">Agent Fundamentals</li>
+          <li data-i18n="c3_t2">Prompt Engineering</li>
+          <li data-i18n="c3_t3">Tool Calling &amp; Memory</li>
+          <li data-i18n="c3_t4">Multi-Agent Architectures</li>
+          <li data-i18n="c3_t5">Production Deployment</li>
+        </ul>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="benroll" data-i18n="btn_enroll">Enroll Now →</a>
+      </div>
+
+      <!-- IoT Foundations — 8 hrs -->
+      <div class="gc ccard rv" data-category="iot">
+        <div class="cemoji">📡</div>
+        <span class="ctag" data-i18n="ctag_iot">IoT Course</span>
+        <div><span class="chours">⏱ 8 Hours</span></div>
+        <h3 data-i18n="c4_h3">IoT Foundations</h3>
+        <p data-i18n="c4_p">Build your first smart devices with sensors, Arduino, and ESP32.</p>
+        <ul class="ctopics">
+          <li data-i18n="c4_t1">IoT Fundamentals</li>
+          <li data-i18n="c4_t2">Sensors and Actuators</li>
+          <li data-i18n="c4_t3">Arduino and ESP32</li>
+          <li data-i18n="c4_t4">MQTT Protocol</li>
+          <li data-i18n="c4_t5">Cloud Connectivity</li>
+        </ul>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="benroll" data-i18n="btn_enroll">Enroll Now →</a>
+      </div>
+
+      <!-- IoT Architecture — 16 hrs -->
+      <div class="gc ccard rv" data-category="iot">
+        <div class="cemoji">🌐</div>
+        <span class="ctag" data-i18n="ctag_iot">IoT Course</span>
+        <div><span class="chours">⏱ 16 Hours</span></div>
+        <h3 data-i18n="c5_h3">IoT Architecture</h3>
+        <p data-i18n="c5_p">Networks, data, and cloud integration for scalable IoT systems.</p>
+        <ul class="ctopics">
+          <li data-i18n="c5_t1">IoT System Design</li>
+          <li data-i18n="c5_t2">Communication Protocols</li>
+          <li data-i18n="c5_t3">Edge-to-Cloud Architecture</li>
+          <li data-i18n="c5_t4">Data Management</li>
+          <li data-i18n="c5_t5">Security Best Practices</li>
+        </ul>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="benroll" data-i18n="btn_enroll">Enroll Now →</a>
+      </div>
+
+      <!-- Mastering IIoT — 30 hrs -->
+      <div class="gc ccard rv" data-category="iot">
+        <div class="cemoji">⚙️</div>
+        <span class="ctag" data-i18n="ctag_iot">IoT Course</span>
+        <div><span class="chours">⏱ 30 Hours</span></div>
+        <h3 data-i18n="c6_h3">Mastering IIoT</h3>
+        <p data-i18n="c6_p">AI in edge computing, security, and scalable industrial IoT deployments.</p>
+        <ul class="ctopics">
+          <li data-i18n="c6_t1">Industrial IoT Architecture</li>
+          <li data-i18n="c6_t2">Edge Computing &amp; AI</li>
+          <li data-i18n="c6_t3">Industrial Protocols</li>
+          <li data-i18n="c6_t4">Cybersecurity</li>
+          <li data-i18n="c6_t5">Scalable Deployments</li>
+        </ul>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="benroll" data-i18n="btn_enroll">Enroll Now →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="register">
+  <div class="inner">
+    <div class="shdr rv">
+      <div class="stag" data-i18n="reg_tag">Course Registration</div>
+      <h2 data-i18n="reg_h2">Register for a Course</h2>
+      <p data-i18n="reg_p">Complete the form below. We'll confirm your enrollment within 24 hours.</p>
+    </div>
+    <div class="reg-wrap">
+      <div class="reg-info rv">
+        <h3 data-i18n="reg_how">How to Register</h3>
+        <div class="steps">
+          <div class="step"><div class="snum">1</div><div class="stxt" data-i18n="step1">Select your desired course from the Academy section</div></div>
+          <div class="step"><div class="snum">2</div><div class="stxt" data-i18n="step2">Click "Enroll Now" or the Register Now button below</div></div>
+          <div class="step"><div class="snum">3</div><div class="stxt" data-i18n="step3">Fill in your details in the Google Form that opens</div></div>
+          <div class="step"><div class="snum">4</div><div class="stxt" data-i18n="step4">Submit the form and receive a confirmation email</div></div>
+        </div>
+      </div>
+      <div class="gc rv" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:52px 40px;gap:18px">
+        <div style="font-size:3.5rem;line-height:1">📝</div>
+        <h3 style="color:#fff;font-size:1.35rem;font-weight:700;margin:0" data-i18n="enroll_cta_h">Ready to Enroll?</h3>
+        <p style="color:var(--muted);max-width:320px;line-height:1.75;margin:0;font-size:.93rem" data-i18n="enroll_cta_p">Click below to open the registration form. It takes under 2 minutes to complete.</p>
+        <a href="https://forms.gle/1zoRR62vQxauoQjw7" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top:10px;font-size:1rem;padding:14px 38px" data-i18n="enroll_cta_btn">Register Now →</a>
+        <p style="color:var(--dim);font-size:.8rem;margin:0" data-i18n="enroll_cta_note">Opens in a new tab · Google Forms</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="inner">
+    <div class="shdr rv">
+      <div class="stag" data-i18n="why_tag">Why Choose Us</div>
+      <h2 data-i18n="why_h2">Why Riyasaa Labs?</h2>
+      <p data-i18n="why_p">Technical depth meets domain expertise — delivering outcomes that matter.</p>
+    </div>
+    <div class="why-grid">
+      <div class="gc wcard rv"><div class="wicon">🎯</div><h3 data-i18n="w1_h3">Industry Expertise</h3><p data-i18n="w1_p">Deep experience across AI, IoT, Energy Management, and Digital Transformation.</p></div>
+      <div class="gc wcard rv"><div class="wicon">🛠️</div><h3 data-i18n="w2_h3">Practical Learning</h3><p data-i18n="w2_p">Hands-on training based on real-world projects and industry use cases.</p></div>
+      <div class="gc wcard rv"><div class="wicon">💡</div><h3 data-i18n="w3_h3">Innovation Driven</h3><p data-i18n="w3_p">Cutting-edge technologies focused on delivering measurable business outcomes.</p></div>
+      <div class="gc wcard rv"><div class="wicon">🌱</div><h3 data-i18n="w4_h3">Sustainability Focused</h3><p data-i18n="w4_p">Helping organizations achieve their Net Zero and ESG goals.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="inner">
+    <div class="shdr rv">
+      <div class="stag" data-i18n="con_tag">Get in Touch</div>
+      <h2 data-i18n="con_h2">Let's Build the Future Together</h2>
+      <p data-i18n="con_p">Have a project, training need, or business challenge? Our team is ready to help.</p>
+    </div>
+    <div class="con-wrap">
+      <div class="con-info rv">
+        <h3 data-i18n="con_info_h3">Contact Information</h3>
+        <p data-i18n="con_info_p">Reach out via email or the form — we typically reply within one business day.</p>
+        <div class="cdet"><div class="cdet-ico">📍</div><div><strong style="color:rgba(255,255,255,.7)">Address</strong><br/>Riyasaa Labs, JS Plaza,<br/>Kottar, Nagercoil</div></div>
+        <div class="cdet"><div class="cdet-ico">📞</div><div><strong style="color:rgba(255,255,255,.7)">Mobile</strong><br/><a href="tel:+919486177055">(+91) 94861-77055</a></div></div>
+        <div class="cdet"><div class="cdet-ico">✉️</div><div><strong style="color:rgba(255,255,255,.7)" data-i18n="con_email_lbl">Email</strong><br/><a href="mailto:hello@riyasaalabs.com">hello@riyasaalabs.com</a></div></div>
+        <div class="cdet"><div class="cdet-ico">🌐</div><div><strong style="color:rgba(255,255,255,.7)" data-i18n="con_web_lbl">Website</strong><br/><a href="https://www.riyasaalabs.com" target="_blank">www.riyasaalabs.com</a></div></div>
+        <p style="margin-top:24px;font-size:.875rem;font-weight:600;color:var(--muted)" data-i18n="con_srv_lbl">Our Services</p>
+        <div class="spills">
+          <span class="spill" data-i18n="srv1">AI Consultancy</span>
+          <span class="spill" data-i18n="srv2">AI Agents</span>
+          <span class="spill" data-i18n="srv3">Smart Buildings</span>
+          <span class="spill" data-i18n="srv4">Solar Analytics</span>
+          <span class="spill" data-i18n="srv5">IoT Platforms</span>
+          <span class="spill" data-i18n="srv6">Corporate Training</span>
+        </div>
+      </div>
+      <form class="gc rv" id="contactForm" action="https://formspree.io/f/maqgeezp" method="POST" style="padding:32px" novalidate>
+        <div class="fgrp"><label data-i18n="f_name">Full Name *</label><input type="text" name="name" placeholder="Your full name"/><span class="field-err">Please enter your full name.</span></div>
+        <div class="fgrp"><label data-i18n="f_email">Email Address *</label><input type="email" name="email" placeholder="you@example.com"/><span class="field-err">Please enter a valid email address.</span></div>
+        <div class="fgrp"><label data-i18n="f_subject">Subject *</label><input type="text" name="subject" placeholder="How can we help?"/><span class="field-err">Please enter a subject.</span></div>
+        <div class="fgrp"><label data-i18n="f_message">Message *</label><textarea name="message" style="min-height:120px" placeholder="Tell us about your project or requirement..."></textarea><span class="field-err">Please enter your message.</span></div>
+        <button type="submit" class="bsub" data-i18n="con_submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 <strong>Riyasaa Labs Private Ltd</strong> — AI • IoT • Sustainability • Intelligent Automation</p>
+  <p style="margin-top:8px"><a href="mailto:hello@riyasaalabs.com">hello@riyasaalabs.com</a> &nbsp;·&nbsp; <a href="https://www.riyasaalabs.com">www.riyasaalabs.com</a></p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// NEURAL NETWORK BACKGROUND
+// ═══════════════════════════════════════════
+(function(){
+  const canvas = document.getElementById('neuralCanvas');
+  const ctx = canvas.getContext('2d');
+  let nodes=[], W=0, H=0, frame=0;
+  const isMobile = () => window.innerWidth < 768;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = canvas.parentElement.offsetHeight || window.innerHeight;
+    initNodes();
+  }
+  function initNodes(){
+    const count = isMobile() ? 35 : 70;
+    nodes = Array.from({length:count}, ()=>({
+      x: Math.random()*W, y: Math.random()*H,
+      vx:(Math.random()-.5)*.4, vy:(Math.random()-.5)*.4,
+      r: Math.random()*1.4+.6, ph: Math.random()*Math.PI*2
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    frame++;
+    nodes.forEach(n=>{
+      n.x+=n.vx; n.y+=n.vy; n.ph+=.016;
+      if(n.x<0||n.x>W) n.vx*=-1;
+      if(n.y<0||n.y>H) n.vy*=-1;
+    });
+    const maxD = isMobile()?100:150;
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        const a=nodes[i],b=nodes[j];
+        const dx=a.x-b.x, dy=a.y-b.y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<maxD){
+          const al=(1-d/maxD)*.22;
+          // Shift hue slowly between primary and accent
+          const t=(Math.sin(frame*.003+i*.15)+1)/2;
+          const r=Math.round(75+t*64), g=Math.round(95-t*3), bv=Math.round(255-t*9);
+          ctx.beginPath();
+          ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=`rgba(${r},${g},${bv},${al})`;
+          ctx.lineWidth=.55; ctx.stroke();
+          // Occasional traveling spark
+          if(d<70&&Math.random()<.004){
+            const t2=(frame%80)/80;
+            const px=a.x+(b.x-a.x)*t2, py=a.y+(b.y-a.y)*t2;
+            ctx.beginPath(); ctx.arc(px,py,1.8,0,Math.PI*2);
+            ctx.fillStyle=`rgba(0,212,255,${al*4})`; ctx.fill();
+          }
+        }
+      }
+    }
+    nodes.forEach(n=>{
+      const g=(Math.sin(n.ph)+1)/2;
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r*(1+g*.5),0,Math.PI*2);
+      ctx.fillStyle=`rgba(75,95,255,${.45+g*.4})`; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', resize);
+  resize(); draw();
+})();
+
+// ═══════════════════════════════════════════
+// SOLAR ANIMATION (hero center)
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('solarCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d'), W=200,H=200,cx=100,cy=100;
+  let f=0;
+  const parts=Array.from({length:10},(_,i)=>({
+    angle:(i/10)*Math.PI*2, dist:32+Math.random()*16,
+    spd:.018+Math.random()*.012, sz:Math.random()*2+.8
+  }));
+  function draw(){
+    ctx.clearRect(0,0,W,H); f++;
+    // Outer halo
+    const halo=ctx.createRadialGradient(cx,cy,18,cx,cy,88);
+    halo.addColorStop(0,'rgba(75,95,255,.18)');
+    halo.addColorStop(.5,'rgba(0,212,255,.07)');
+    halo.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(cx,cy,88,0,Math.PI*2);
+    ctx.fillStyle=halo; ctx.fill();
+    // Rotating rays
+    for(let i=0;i<8;i++){
+      const ang=(i/8)*Math.PI*2+f*.007;
+      const x1=cx+Math.cos(ang)*32, y1=cy+Math.sin(ang)*32;
+      const x2=cx+Math.cos(ang)*72, y2=cy+Math.sin(ang)*72;
+      const rg=ctx.createLinearGradient(x1,y1,x2,y2);
+      rg.addColorStop(0,'rgba(75,95,255,.7)');
+      rg.addColorStop(1,'rgba(0,212,255,0)');
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+      ctx.strokeStyle=rg; ctx.lineWidth=1.8; ctx.stroke();
+    }
+    // Orbiting particles
+    parts.forEach((p,i)=>{
+      p.angle+=p.spd;
+      const x=cx+Math.cos(p.angle)*p.dist, y=cy+Math.sin(p.angle)*p.dist;
+      ctx.beginPath(); ctx.arc(x,y,p.sz,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,212,255,${.5+Math.sin(f*.06+i)*.35})`; ctx.fill();
+    });
+    // Center sun glow
+    const sg=ctx.createRadialGradient(cx,cy,0,cx,cy,30);
+    sg.addColorStop(0,'rgba(255,255,255,.95)');
+    sg.addColorStop(.4,'rgba(75,95,255,.85)');
+    sg.addColorStop(1,'rgba(139,92,246,0)');
+    ctx.beginPath(); ctx.arc(cx,cy,30,0,Math.PI*2);
+    ctx.fillStyle=sg; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,16,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.9)'; ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════════
+// ENERGY LINE CHART (hero widget)
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('echart');
+  if(!c) return;
+  const ctx=c.getContext('2d'), W=130,H=40;
+  const data=[18,30,24,42,35,50,44,58,52,68,62,78];
+  let prog=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const max=Math.max(...data), step=W/(data.length-1);
+    const visLen=Math.floor(prog*(data.length-1));
+    // Area
+    ctx.beginPath(); ctx.moveTo(0,H);
+    data.slice(0,visLen+1).forEach((v,i)=>{
+      const x=i*step, y=H-(v/max)*H*.85;
+      ctx.lineTo(x,y);
+    });
+    ctx.lineTo(visLen*step,H); ctx.closePath();
+    const ag=ctx.createLinearGradient(0,0,0,H);
+    ag.addColorStop(0,'rgba(75,95,255,.4)'); ag.addColorStop(1,'rgba(75,95,255,0)');
+    ctx.fillStyle=ag; ctx.fill();
+    // Line
+    ctx.beginPath();
+    data.slice(0,visLen+1).forEach((v,i)=>{
+      const x=i*step, y=H-(v/max)*H*.85;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle='rgba(0,212,255,.85)'; ctx.lineWidth=1.5; ctx.stroke();
+    if(prog<1){prog=Math.min(prog+.04,1); requestAnimationFrame(draw);}
+  }
+  setTimeout(()=>draw(), 400);
+})();
+
+// ═══════════════════════════════════════════
+// BUILDING DIGITAL TWIN ANIMATION
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('buildingCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d');
+  const W=260,H=150, floors=7;
+  const bW=80, bH=110, bX=(W-bW)/2-20, bY=H-bH-10;
+  const fH=bH/floors;
+  let f=0, active=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    f++;
+    if(f%45===0) active=(active+1)%floors;
+    // Building shell
+    ctx.strokeStyle='rgba(75,95,255,.4)'; ctx.lineWidth=1;
+    ctx.strokeRect(bX,bY,bW,bH);
+    // Floors
+    for(let i=0;i<floors;i++){
+      const fy=bY+bH-(i+1)*fH;
+      const isAct=i===active;
+      const pulse=isAct?.28+Math.sin(f*.12)*.12:.04;
+      ctx.fillStyle=isAct?`rgba(0,212,255,${pulse})`:`rgba(75,95,255,${pulse})`;
+      ctx.fillRect(bX+1,fy+1,bW-2,fH-2);
+      // Floor line
+      ctx.strokeStyle='rgba(75,95,255,.18)'; ctx.lineWidth=.5;
+      ctx.beginPath(); ctx.moveTo(bX,fy+fH); ctx.lineTo(bX+bW,fy+fH); ctx.stroke();
+      // Windows (3 per floor)
+      for(let j=0;j<3;j++){
+        const wW=(bW-14)/3, wX=bX+7+j*wW, wY=fy+4, wH=fH-8;
+        ctx.fillStyle=isAct?`rgba(0,212,255,${.5+Math.sin(f*.12+j*.8)*.3})`:'rgba(75,95,255,.14)';
+        ctx.fillRect(wX,wY,wW-3,wH);
+      }
+      // Active floor callout
+      if(isAct){
+        const dotX=bX+bW+22, dotY=fy+fH/2;
+        ctx.beginPath(); ctx.moveTo(bX+bW,dotY); ctx.lineTo(dotX-3,dotY);
+        ctx.strokeStyle='rgba(0,212,255,.4)'; ctx.lineWidth=.8; ctx.stroke();
+        ctx.beginPath(); ctx.arc(dotX,dotY,2.5+Math.sin(f*.12)*.8,0,Math.PI*2);
+        ctx.fillStyle='rgba(0,212,255,.9)'; ctx.fill();
+        ctx.font='8px Inter'; ctx.fillStyle='rgba(0,212,255,.8)';
+        ctx.fillText(`Floor ${i+1} ◆ Active`,dotX+6,dotY+3);
+      }
+    }
+    // Ground
+    ctx.strokeStyle='rgba(75,95,255,.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(bX-15,bY+bH); ctx.lineTo(bX+bW+15,bY+bH); ctx.stroke();
+    // Lift shaft (left)
+    const sX=bX-13, sW=7;
+    ctx.strokeStyle='rgba(139,92,246,.3)'; ctx.lineWidth=.5;
+    ctx.strokeRect(sX,bY,sW,bH);
+    const liftY=bY+bH-(active+1)*fH+2;
+    ctx.fillStyle=`rgba(139,92,246,${.55+Math.sin(f*.05)*.2})`;
+    ctx.fillRect(sX+1,liftY,sW-2,fH-4);
+    // Right side: data flow lines
+    const lineX=bX+bW+75;
+    [0,2,4,6].forEach((fl,idx)=>{
+      const ly=bY+bH-(fl+.5)*fH;
+      const prog=((f*1.2+idx*30)%120)/120;
+      const px=bX+bW+5+prog*55;
+      ctx.beginPath(); ctx.moveTo(bX+bW+5,ly); ctx.lineTo(bX+bW+60,ly);
+      ctx.strokeStyle='rgba(75,95,255,.12)'; ctx.lineWidth=.5; ctx.stroke();
+      ctx.beginPath(); ctx.arc(px,ly,1.5,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,212,255,.7)'; ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════════
+// ENERGY WAVEFORM ANIMATION
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('waveCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d'), W=260,H=60;
+  let f=0;
+  const waves=[
+    {r:'75,95,255', amp:18, freq:.038, ph:0, al:.8},
+    {r:'0,212,255', amp:11, freq:.058, ph:1.1, al:.6},
+    {r:'139,92,246',amp:7,  freq:.08,  ph:.5,  al:.4}
+  ];
+  function draw(){
+    ctx.clearRect(0,0,W,H); f++;
+    waves.forEach(w=>{
+      ctx.beginPath();
+      for(let x=0;x<=W;x++){
+        const y=H/2+Math.sin(x*w.freq+f*.05+w.ph)*w.amp;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.strokeStyle=`rgba(${w.r},${w.al})`; ctx.lineWidth=1.5; ctx.stroke();
+    });
+    // Glowing dot on first wave
+    const dx=(f*2)%W;
+    const dy=H/2+Math.sin(dx*waves[0].freq+f*.05)*waves[0].amp;
+    const dg=ctx.createRadialGradient(dx,dy,0,dx,dy,9);
+    dg.addColorStop(0,'rgba(0,212,255,.9)'); dg.addColorStop(1,'rgba(0,212,255,0)');
+    ctx.beginPath(); ctx.arc(dx,dy,9,0,Math.PI*2); ctx.fillStyle=dg; ctx.fill();
+    ctx.beginPath(); ctx.arc(dx,dy,2.5,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════════
+// SCROLL REVEAL
+// ═══════════════════════════════════════════
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('vis')});
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>observer.observe(el));
+
+// ═══════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════
+function showProduct(idx, btn){
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.prod-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ppanel-'+idx).classList.add('active');
+}
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mobileMenu');
+  if(m.classList.contains('open')&&!document.getElementById('navbar').contains(e.target)&&!m.contains(e.target))
+    m.classList.remove('open');
+});
+function filterCourses(cat,ev){
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  ev.target.classList.add('active');
+  document.querySelectorAll('#cgrid .gc').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.category===cat)?'flex':'none';
+  });
+}
+// ═══════════════════════════════════════════
+// TOAST NOTIFICATION
+// ═══════════════════════════════════════════
+function showToast(msg, type){
+  const el=document.createElement('div');
+  el.textContent=msg;
+  el.style.cssText=`position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:500;color:#fff;background:${type==='success'?'var(--primary)':'#ef4444'};box-shadow:0 8px 32px rgba(0,0,0,.4);animation:toastIn .32s ease;max-width:340px;line-height:1.5`;
+  document.body.appendChild(el);
+  setTimeout(()=>{el.style.cssText+=';opacity:0;transition:opacity .4s ease';setTimeout(()=>el.remove(),420);},4200);
+}
+
+// ═══════════════════════════════════════════
+// FORM VALIDATION + FETCH SUBMIT
+// ═══════════════════════════════════════════
+function validateForm(form){
+  let valid=true;
+  // Clear previous errors
+  form.querySelectorAll('.field-err').forEach(e=>{e.classList.remove('show')});
+  form.querySelectorAll('.err').forEach(e=>{e.classList.remove('err')});
+
+  form.querySelectorAll('input,select,textarea').forEach(field=>{
+    if(field.name==='organization'||field.name==='notes') return; // optional fields
+    const val=field.value.trim();
+    let ok=val!=='';
+    if(field.type==='email'&&ok) ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    if(!ok){
+      valid=false;
+      field.classList.add('err');
+      const err=field.parentElement.querySelector('.field-err');
+      if(err) err.classList.add('show');
+    }
+  });
+  // Clear error on user input
+  form.querySelectorAll('input,select,textarea').forEach(field=>{
+    field.addEventListener('input',()=>{
+      field.classList.remove('err');
+      const err=field.parentElement.querySelector('.field-err');
+      if(err) err.classList.remove('show');
+    },{once:true});
+  });
+  return valid;
+}
+
+async function submitForm(form, successMsg){
+  const btn=form.querySelector('.bsub');
+  const orig=btn.textContent;
+  btn.textContent='Sending…'; btn.disabled=true;
+  try{
+    const res=await fetch(form.action,{
+      method:'POST',
+      body:new FormData(form),
+      headers:{Accept:'application/json'}
+    });
+    if(res.ok){
+      showToast(successMsg,'success');
+      form.reset();
+    } else {
+      const d=await res.json().catch(()=>({}));
+      const msg=d.errors?.[0]?.message||'Submission failed. Please try again.';
+      showToast(msg,'error');
+    }
+  } catch{
+    showToast('Network error. Please check your connection.','error');
+  }
+  btn.textContent=orig; btn.disabled=false;
+}
+
+document.getElementById('contactForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if(validateForm(this)) submitForm(this,'Message sent! We\'ll get back to you within one business day.');
+});
+
+
+// ═══════════════════════════════════════════
+// i18n – THREE LANGUAGES
+// ═══════════════════════════════════════════
+const T={
+en:{
+  nav_solutions:"Solutions",nav_products:"Products",nav_academy:"Academy",nav_why:"Why Us",nav_contact:"Contact Us",nav_register:"Register",
+  hero_badge:"AI • IoT • Sustainability • Automation",hero_h1a:"Building a",hero_h1b:" Smarter",hero_h1c:"Sustainable ",hero_h1d:"Future",
+  hero_sub:"Technology-driven solutions that help businesses optimize energy, reduce carbon emissions, and accelerate their Net Zero journey.",
+  hero_cta1:"Explore Solutions",hero_cta2:"Talk to Us",
+  stat1:"Core Solutions",stat2:"Industries",stat3:"Courses",
+  sol_tag:"Our Solutions",sol_h2:"Intelligent Technology for Every Challenge",sol_p:"From solar analytics to smart buildings — AI, IoT, and deep domain expertise combined.",
+  s1_h3:"AI for Solar",s1_p:"Transform solar operations with intelligent monitoring, predictive analytics, and automated insights.",s1_f1:"Real-time solar plant monitoring",s1_f2:"AI-powered fault detection",s1_f3:"Energy yield forecasting",s1_f4:"Predictive maintenance",s1_f5:"Automated reporting & alerts",s1_b1:"↑ Production",s1_b2:"↓ Downtime",s1_b3:"Max ROI",
+  s2_h3:"AI for Buildings",s2_p:"Create intelligent, energy-efficient buildings through automation and advanced analytics.",s2_f1:"Smart Building Management Systems",s2_f2:"HVAC optimization",s2_f3:"Occupancy-based control",s2_f4:"Energy consumption analytics",s2_f5:"Sustainability dashboards",s2_b1:"↓ Energy Costs",s2_b2:"ESG Support",s2_b3:"Net Zero",
+  s3_h3:"AI Consultancy",s3_p:"Helping organizations unlock the full power of Artificial Intelligence — from strategy to deployment.",s3_f1:"AI Strategy & Roadmap",s3_f2:"Custom AI Agent Development",s3_f3:"Generative AI Solutions",s3_f4:"Workflow Automation",s3_f5:"LLM Fine-Tuning & RAG",s3_b1:"Energy & Utilities",s3_b2:"Manufacturing",s3_b3:"Healthcare",
+  prod_tag:"Our Products",prod_h2:"Purpose-Built AI Platforms",prod_p:"Ready-to-deploy intelligent platforms powered by AI — for real-world industrial and commercial environments.",
+  p1_h3:"Intelligent Lift Monitoring",p1_p:"AI-powered predictive maintenance and real-time operational analytics for elevators — reducing downtime and maintenance costs through machine learning and IoT sensor data.",
+  p2_h3:"Renewable Energy Monitor",p2_p:"AI-driven solar analytics platform for solar PV, energy storage, and microgrids — maximize yield with intelligent forecasting, automated fault detection, and portfolio management.",
+  p3_h3:"Smart Building Control",p3_p:"AI-enabled integrated platform for energy optimization, building automation, and sustainability reporting — powered by real-time IoT data and machine learning to cut costs and hit Net Zero targets.",
+  acad_tag:"Riyasaa Academy",acad_h2:"Empowering Professionals with Future-Ready Skills",acad_p:"Practical, industry-focused training in AI, IoT, and Digital Transformation.",
+  tab_all:"All Courses",tab_ai:"Artificial Intelligence",tab_iot:"Internet of Things",ctag_ai:"AI Course",ctag_iot:"IoT Course",
+  c1_h3:"n8n – All You Need to Know",c1_p:"Master workflow automation without complex coding using n8n.",c1_t1:"Introduction to n8n",c1_t2:"Building Automation Workflows",c1_t3:"API Integrations",c1_t4:"AI-Powered Automation",c1_t5:"Production Deployment",
+  c2_h3:"MCP for Beginners",c2_p:"Learn the Model Context Protocol and build next-generation AI integrations.",c2_t1:"MCP Fundamentals",c2_t2:"MCP Architecture",c2_t3:"Connecting AI Tools",c2_t4:"Context-Aware Agents",c2_t5:"Real-World Applications",
+  c3_h3:"Building AI Agents",c3_p:"Create intelligent AI agents capable of reasoning, planning, and taking actions.",c3_t1:"Agent Fundamentals",c3_t2:"Prompt Engineering",c3_t3:"Tool Calling & Memory",c3_t4:"Multi-Agent Architectures",c3_t5:"Production Deployment",
+  c4_h3:"IoT Foundations",c4_p:"Build your first smart devices with sensors, Arduino, and ESP32.",c4_t1:"IoT Fundamentals",c4_t2:"Sensors and Actuators",c4_t3:"Arduino and ESP32",c4_t4:"MQTT Protocol",c4_t5:"Cloud Connectivity",
+  c5_h3:"IoT Architecture",c5_p:"Networks, data, and cloud integration for scalable IoT systems.",c5_t1:"IoT System Design",c5_t2:"Communication Protocols",c5_t3:"Edge-to-Cloud Architecture",c5_t4:"Data Management",c5_t5:"Security Best Practices",
+  c6_h3:"Mastering IIoT",c6_p:"AI in edge computing, security, and scalable industrial IoT deployments.",c6_t1:"Industrial IoT Architecture",c6_t2:"Edge Computing & AI",c6_t3:"Industrial Protocols",c6_t4:"Cybersecurity",c6_t5:"Scalable Deployments",
+  btn_enroll:"Enroll Now →",
+  reg_tag:"Course Registration",reg_h2:"Register for a Course",reg_p:"Follow the steps below and click Register Now to enroll.",reg_how:"How to Register",
+  step1:"Select your desired course from the Academy section",step2:"Click \"Enroll Now\" or the Register Now button",step3:"Fill in your details in the Google Form that opens",step4:"Submit the form and receive a confirmation email",
+  enroll_cta_h:"Ready to Enroll?",enroll_cta_p:"Click below to open the registration form. It takes under 2 minutes to complete.",enroll_cta_btn:"Register Now →",enroll_cta_note:"Opens in a new tab · Google Forms",
+  f_subject:"Subject *",f_message:"Message *",
+  why_tag:"Why Choose Us",why_h2:"Why Riyasaa Labs?",why_p:"Technical depth meets domain expertise — delivering outcomes that matter.",
+  w1_h3:"Industry Expertise",w1_p:"Deep experience across AI, IoT, Energy Management, and Digital Transformation.",
+  w2_h3:"Practical Learning",w2_p:"Hands-on training based on real-world projects and industry use cases.",
+  w3_h3:"Innovation Driven",w3_p:"Cutting-edge technologies focused on delivering measurable business outcomes.",
+  w4_h3:"Sustainability Focused",w4_p:"Helping organizations achieve their Net Zero and ESG goals.",
+  con_tag:"Get in Touch",con_h2:"Let's Build the Future Together",con_p:"Have a project, training need, or business challenge? Our team is ready to help.",
+  con_info_h3:"Contact Information",con_info_p:"Reach out via email or the form — we reply within one business day.",
+  con_email_lbl:"Email",con_web_lbl:"Website",con_srv_lbl:"Our Services",
+  srv1:"AI Consultancy",srv2:"AI Agents",srv3:"Smart Buildings",srv4:"Solar Analytics",srv5:"IoT Platforms",srv6:"Corporate Training",con_submit:"Send Message"
+},
+
+ta:{
+  nav_solutions:"தீர்வுகள்",nav_products:"தயாரிப்புகள்",nav_academy:"அகாடமி",nav_why:"ஏன் நாங்கள்",nav_contact:"தொடர்பு கொள்ளுங்கள்",nav_register:"பதிவு",
+  hero_badge:"AI • IoT • நிலைத்தன்மை • தானியங்கி",hero_h1a:"ஒரு",hero_h1b:" சிறந்த",hero_h1c:"நிலையான ",hero_h1d:"எதிர்காலம்",
+  hero_sub:"வணிகங்கள் ஆற்றலை உகப்பாக்கவும், உமிழ்வைக் குறைக்கவும், Net Zero இலக்குகளை அடையவும் உதவும் தொழில்நுட்ப தீர்வுகள்.",
+  hero_cta1:"தீர்வுகளை காணுங்கள்",hero_cta2:"பேசுங்கள்",
+  stat1:"முக்கிய தீர்வுகள்",stat2:"துறைகள்",stat3:"படிப்புகள்",
+  sol_tag:"எங்கள் தீர்வுகள்",sol_h2:"ஒவ்வொரு சவாலுக்கும் நுண்ணறிவு தொழில்நுட்பம்",sol_p:"சூரிய பகுப்பாய்வு முதல் ஸ்மார்ட் கட்டிடங்கள் வரை — AI, IoT மற்றும் துறை அனுபவம்.",
+  s1_h3:"சூரியசக்திக்கு AI",s1_p:"நுண்ணறிவு கண்காணிப்பு மற்றும் முன்கணிப்பு பகுப்பாய்வால் சூரிய செயல்பாடுகளை மாற்றுங்கள்.",s1_f1:"நேரடி சூரிய ஆலை கண்காணிப்பு",s1_f2:"AI சக்தி கொண்ட தவறு கண்டறிதல்",s1_f3:"ஆற்றல் வருவாய் முன்னறிவிப்பு",s1_f4:"முன்கணிப்பு பராமரிப்பு",s1_f5:"தானியங்கி அறிக்கைகள் மற்றும் எச்சரிக்கைகள்",s1_b1:"↑ உற்பத்தி",s1_b2:"↓ இடைநிறுத்தல்",s1_b3:"அதிகபட்ச ROI",
+  s2_h3:"கட்டிடங்களுக்கு AI",s2_p:"தானியங்கி மற்றும் மேம்பட்ட பகுப்பாய்வு மூலம் புத்திசாலி, ஆற்றல் திறன் கொண்ட கட்டிடங்கள் உருவாக்குங்கள்.",s2_f1:"ஸ்மார்ட் கட்டிட மேலாண்மை அமைப்புகள்",s2_f2:"HVAC உகப்பாக்கம்",s2_f3:"இருப்பு அடிப்படை கட்டுப்பாடு",s2_f4:"ஆற்றல் நுகர்வு பகுப்பாய்வு",s2_f5:"நிலைத்தன்மை டாஷ்போர்டுகள்",s2_b1:"↓ ஆற்றல் செலவுகள்",s2_b2:"ESG ஆதரவு",s2_b3:"நெட் ஜீரோ",
+  s3_h3:"AI ஆலோசனை",s3_p:"நிறுவனங்கள் செயற்கை நுண்ணறிவின் முழு சக்தியை திறக்க உதவுகிறோம்.",s3_f1:"AI மூலோபாயம் & வரைபடம்",s3_f2:"தனிப்பயன் AI முகவர் மேம்பாடு",s3_f3:"ஜெனரேட்டிவ் AI தீர்வுகள்",s3_f4:"பணிப்பாய்வு தானியங்கி",s3_f5:"LLM Fine-Tuning & RAG",s3_b1:"ஆற்றல் & பயன்பாடுகள்",s3_b2:"உற்பத்தி",s3_b3:"சுகாதாரம்",
+  prod_tag:"எங்கள் தயாரிப்புகள்",prod_h2:"நோக்கத்திற்காக உருவாக்கப்பட்ட தளங்கள்",prod_p:"உண்மையான தொழில்துறை மற்றும் வணிக சூழல்களுக்கான நுண்ணறிவு தளங்கள்.",
+  p1_h3:"லிஃப்ட் கண்காணிப்பு",p1_p:"முன்கணிப்பு பராமரிப்பு மற்றும் செயல்பாட்டு பகுப்பாய்வுக்கான AI லிஃப்ட் கண்காணிப்பு.",p1_f1:"நேரடி உபகரண தெரிவுநிலை",p1_f2:"தவறு கணிப்பு",p1_f3:"பராமரிப்பு உகப்பாக்கம்",p1_f4:"தொலைநிலை கண்காணிப்பு",
+  p2_h3:"புதுப்பிக்கத்தக்க ஆற்றல் கண்காணிப்பு",p2_p:"சூரிய PV, ஆற்றல் சேமிப்பு, மைக்ரோகிரிட்கள் கண்காணிப்பு.",p2_f1:"சூரிய PV அமைப்புகள்",p2_f2:"ஆற்றல் சேமிப்பு அமைப்புகள்",p2_f3:"மைக்ரோகிரிட்கள்",p2_f4:"போர்ட்ஃபோலியோ மேலாண்மை",
+  p3_h3:"ஸ்மார்ட் கட்டிட கட்டுப்பாடு",p3_p:"ஆற்றல் உகப்பாக்கம், தானியங்கி மற்றும் நிலைத்தன்மை அறிக்கைக்கான ஒருங்கிணைந்த தளம்.",p3_f1:"ஆற்றல் உகப்பாக்கம்",p3_f2:"கட்டிட தானியங்கி",p3_f3:"நிலைத்தன்மை அறிக்கை",p3_f4:"நுண்ணறிவு கட்டுப்பாட்டு அமைப்புகள்",
+  acad_tag:"ரியாசா அகாடமி",acad_h2:"வல்லுனர்களை எதிர்கால திறன்களால் வலிமைப்படுத்துகிறோம்",acad_p:"AI, IoT மற்றும் டிஜிட்டல் மாற்றத்தில் பொறியாளர்கள் மற்றும் வல்லுனர்களுக்கான நடைமுறை பயிற்சி.",
+  tab_all:"அனைத்து படிப்புகள்",tab_ai:"செயற்கை நுண்ணறிவு",tab_iot:"இணையம் of Things",ctag_ai:"AI படிப்பு",ctag_iot:"IoT படிப்பு",
+  c1_h3:"n8n – அனைத்தும் தெரிந்துகொள்ளுங்கள்",c1_p:"n8n மூலம் சிக்கலான குறியீடு இல்லாமல் பணிப்பாய்வு தானியங்கியை மாஸ்டர் செய்யுங்கள்.",c1_t1:"n8n அறிமுகம்",c1_t2:"தானியங்கி பணிப்பாய்வுகள்",c1_t3:"API ஒருங்கிணைப்புகள்",c1_t4:"AI சக்தி கொண்ட தானியங்கி",c1_t5:"உற்பத்தி வரிசைப்படுத்தல்",
+  c2_h3:"MCP for Beginners",c2_p:"Model Context Protocol கற்று அடுத்த தலைமுறை AI ஒருங்கிணைப்புகளை உருவாக்குங்கள்.",c2_t1:"MCP அடிப்படைகள்",c2_t2:"MCP கட்டமைப்பு",c2_t3:"AI கருவிகளை இணைத்தல்",c2_t4:"சூழல் விழிப்புணர்வு முகவர்கள்",c2_t5:"நடைமுறை பயன்பாடுகள்",
+  c3_h3:"AI முகவர்கள் உருவாக்குதல்",c3_p:"சிந்திக்கவும், திட்டமிடவும், செயல்படவும் திறன் கொண்ட AI முகவர்களை உருவாக்குங்கள்.",c3_t1:"முகவர் அடிப்படைகள்",c3_t2:"Prompt Engineering",c3_t3:"Tool Calling & நினைவகம்",c3_t4:"Multi-Agent கட்டமைப்புகள்",c3_t5:"உற்பத்தி வரிசைப்படுத்தல்",
+  c4_h3:"IoT அடிப்படைகள்",c4_p:"சென்சார்கள், Arduino மற்றும் ESP32 மூலம் உங்கள் முதல் ஸ்மார்ட் சாதனத்தை உருவாக்குங்கள்.",c4_t1:"IoT அடிப்படைகள்",c4_t2:"சென்சார்கள் மற்றும் ஆக்சுவேட்டர்கள்",c4_t3:"Arduino மற்றும் ESP32",c4_t4:"MQTT நெறிமுறை",c4_t5:"கிளவுட் இணைப்பு",
+  c5_h3:"IoT கட்டமைப்பு",c5_p:"அளவிடக்கூடிய IoT அமைப்புகளுக்கான நெட்வொர்க்குகள், தரவு மற்றும் கிளவுட் ஒருங்கிணைப்பு.",c5_t1:"IoT கணினி வடிவமைப்பு",c5_t2:"தகவல்தொடர்பு நெறிமுறைகள்",c5_t3:"Edge-to-Cloud கட்டமைப்பு",c5_t4:"தரவு மேலாண்மை",c5_t5:"பாதுகாப்பு சிறந்த நடைமுறைகள்",
+  c6_h3:"IIoT மாஸ்டரி",c6_p:"Edge கம்ப்யூட்டிங், பாதுகாப்பு மற்றும் தொழில்துறை IoT வரிசைப்படுத்தல்களில் AI.",c6_t1:"தொழில்துறை IoT கட்டமைப்பு",c6_t2:"Edge Computing & AI",c6_t3:"தொழில்துறை நெறிமுறைகள்",c6_t4:"சைபர் பாதுகாப்பு",c6_t5:"அளவிடக்கூடிய வரிசைப்படுத்தல்கள்",
+  btn_enroll:"இப்போது சேருங்கள் →",
+  reg_tag:"படிப்பு பதிவு",reg_h2:"படிப்பில் பதிவு செய்யுங்கள்",reg_p:"கீழேயுள்ள படிவத்தை பூர்த்தி செய்யுங்கள். 24 மணி நேரத்தில் உறுதிப்படுத்துவோம்.",reg_how:"பதிவு செய்வது எப்படி",
+  step1:"அகாடமி பிரிவிலிருந்து உங்கள் படிப்பை தேர்ந்தெடுங்கள்",step2:"இப்போது பதிவு செய்யுங்கள் பொத்தானை கிளிக் செய்யுங்கள்",step3:"திறக்கும் Google படிவத்தில் உங்கள் விவரங்களை பூர்த்தி செய்யுங்கள்",step4:"படிவத்தை சமர்ப்பித்து உறுதிப்படுத்தல் மின்னஞ்சல் பெறுங்கள்",
+  enroll_cta_h:"பதிவு செய்ய தயாரா?",enroll_cta_p:"பதிவு படிவத்தை திறக்க கீழே கிளிக் செய்யுங்கள். 2 நிமிடங்களுக்கும் குறைவாக ஆகும்.",enroll_cta_btn:"இப்போது பதிவு செய்யுங்கள் →",enroll_cta_note:"புதிய தாவலில் திறக்கும் · Google Forms",
+  f_subject:"பொருள் *",f_message:"செய்தி *",
+  why_tag:"ஏன் எங்களை தேர்ந்தெடுக்க வேண்டும்",why_h2:"ஏன் ரியாசா லேப்ஸ்?",why_p:"அர்த்தமுள்ள முடிவுகளை வழங்க தொழில்நுட்ப ஆழம் மற்றும் துறை அனுபவத்தை இணைக்கிறோம்.",
+  w1_h3:"துறை அனுபவம்",w1_p:"AI, IoT, ஆற்றல் மேலாண்மை மற்றும் டிஜிட்டல் மாற்றத்தில் ஆழமான அனுபவம்.",
+  w2_h3:"நடைமுறை கற்றல்",w2_p:"உண்மையான திட்டங்கள் மற்றும் துறை பயன்பாட்டு வழக்குகளின் அடிப்படையில் கற்பித்தல்.",
+  w3_h3:"புதுமை இயக்கப்படும்",w3_p:"அளவிடக்கூடிய வணிக முடிவுகளை வழங்க அதிநவீன தொழில்நுட்பங்கள்.",
+  w4_h3:"நிலைத்தன்மை கவனம்",w4_p:"நிறுவனங்கள் அவர்களின் Net Zero மற்றும் ESG இலக்குகளை அடைய உதவுகிறோம்.",
+  con_tag:"தொடர்பு கொள்ளுங்கள்",con_h2:"ஒன்றாக எதிர்காலம் உருவாக்குவோம்",con_p:"திட்டம், பயிற்சி தேவை அல்லது வணிக சவால் இருக்கிறதா? எங்கள் குழு உதவ மகிழ்ச்சிப்படும்.",
+  con_info_h3:"தொடர்பு தகவல்",con_info_p:"மின்னஞ்சல் மூலம் அணுகுங்கள் அல்லது படிவத்தை பயன்படுத்துங்கள் — ஒரு வணிக நாளுக்குள் பதிலளிப்போம்.",
+  con_email_lbl:"மின்னஞ்சல்",con_web_lbl:"இணையதளம்",con_srv_lbl:"எங்கள் சேவைகள்",
+  srv1:"AI ஆலோசனை",srv2:"AI முகவர்கள்",srv3:"ஸ்மார்ட் கட்டிடங்கள்",srv4:"சூரிய பகுப்பாய்வு",srv5:"IoT தளங்கள்",srv6:"பயிற்சி",con_submit:"செய்தி அனுப்பு"
+},
+
+hi:{
+  nav_solutions:"समाधान",nav_products:"उत्पाद",nav_academy:"अकादमी",nav_why:"हम क्यों",nav_contact:"संपर्क करें",nav_register:"पंजीकरण",
+  hero_badge:"AI • IoT • स्थिरता • बुद्धिमान स्वचालन",hero_h1a:"एक",hero_h1b:" स्मार्ट",hero_h1c:"टिकाऊ ",hero_h1d:"भविष्य बनाना",
+  hero_sub:"ऐसे तकनीकी समाधान जो व्यवसायों को ऊर्जा अनुकूलित करने, उत्सर्जन कम करने और Net Zero लक्ष्यों को प्राप्त करने में मदद करते हैं।",
+  hero_cta1:"समाधान देखें",hero_cta2:"बात करें",
+  stat1:"मुख्य समाधान",stat2:"उद्योग क्षेत्र",stat3:"प्रशिक्षण पाठ्यक्रम",
+  sol_tag:"हमारे समाधान",sol_h2:"हर चुनौती के लिए बुद्धिमान तकनीक",sol_p:"सौर विश्लेषण से स्मार्ट भवनों तक — AI, IoT और गहन डोमेन विशेषज्ञता।",
+  s1_h3:"सौर के लिए AI",s1_p:"बुद्धिमान निगरानी और पूर्वानुमानात्मक विश्लेषण से सौर संचालन को बदलें।",s1_f1:"रियल-टाइम सौर संयंत्र निगरानी",s1_f2:"AI-संचालित दोष पहचान",s1_f3:"ऊर्जा उत्पादन पूर्वानुमान",s1_f4:"पूर्वानुमानात्मक रखरखाव",s1_f5:"स्वचालित रिपोर्टिंग और अलर्ट",s1_b1:"↑ उत्पादन",s1_b2:"↓ डाउनटाइम",s1_b3:"अधिकतम ROI",
+  s2_h3:"भवनों के लिए AI",s2_p:"स्वचालन और उन्नत विश्लेषण से बुद्धिमान, ऊर्जा-कुशल भवन बनाएं।",s2_f1:"स्मार्ट बिल्डिंग प्रबंधन प्रणाली",s2_f2:"HVAC अनुकूलन",s2_f3:"अधिभोग-आधारित नियंत्रण",s2_f4:"ऊर्जा खपत विश्लेषण",s2_f5:"स्थिरता डैशबोर्ड",s2_b1:"↓ ऊर्जा लागत",s2_b2:"ESG सहायता",s2_b3:"नेट जीरो",
+  s3_h3:"AI परामर्श",s3_p:"संगठनों को कृत्रिम बुद्धिमत्ता की पूरी शक्ति अनलॉक करने में मदद करना।",s3_f1:"AI रणनीति और रोडमैप",s3_f2:"कस्टम AI एजेंट विकास",s3_f3:"जनरेटिव AI समाधान",s3_f4:"वर्कफ़्लो ऑटोमेशन",s3_f5:"LLM Fine-Tuning & RAG",s3_b1:"ऊर्जा और उपयोगिताएं",s3_b2:"विनिर्माण",s3_b3:"स्वास्थ्य सेवा",
+  prod_tag:"हमारे उत्पाद",prod_h2:"उद्देश्य-निर्मित प्लेटफ़ॉर्म",prod_p:"वास्तविक औद्योगिक और वाणिज्यिक वातावरण के लिए तैयार बुद्धिमान प्लेटफ़ॉर्म।",
+  p1_h3:"लिफ्ट निगरानी",p1_p:"पूर्वानुमानात्मक रखरखाव के लिए AI-संचालित लिफ्ट निगरानी।",p1_f1:"रियल-टाइम उपकरण दृश्यता",p1_f2:"दोष पूर्वानुमान",p1_f3:"रखरखाव अनुकूलन",p1_f4:"दूरस्थ निगरानी",
+  p2_h3:"नवीकरणीय ऊर्जा मॉनिटर",p2_p:"सौर PV, ऊर्जा भंडारण, माइक्रोग्रिड की उन्नत निगरानी।",p2_f1:"सौर PV प्रणालियां",p2_f2:"ऊर्जा भंडारण प्रणालियां",p2_f3:"माइक्रोग्रिड",p2_f4:"पोर्टफोलियो प्रबंधन",
+  p3_h3:"स्मार्ट बिल्डिंग नियंत्रण",p3_p:"ऊर्जा अनुकूलन, स्वचालन और स्थिरता रिपोर्टिंग के लिए एकीकृत प्लेटफ़ॉर्म।",p3_f1:"ऊर्जा अनुकूलन",p3_f2:"भवन स्वचालन",p3_f3:"स्थिरता रिपोर्टिंग",p3_f4:"बुद्धिमान नियंत्रण प्रणालियां",
+  acad_tag:"रियासा अकादमी",acad_h2:"पेशेवरों को भविष्य-तैयार कौशल से सशक्त बनाना",acad_p:"AI, IoT और डिजिटल परिवर्तन में इंजीनियरों और पेशेवरों के लिए व्यावहारिक प्रशिक्षण।",
+  tab_all:"सभी पाठ्यक्रम",tab_ai:"कृत्रिम बुद्धिमत्ता",tab_iot:"इंटरनेट ऑफ थिंग्स",ctag_ai:"AI पाठ्यक्रम",ctag_iot:"IoT पाठ्यक्रम",
+  c1_h3:"n8n – सब कुछ जानें",c1_p:"n8n का उपयोग करके जटिल कोडिंग के बिना वर्कफ़्लो ऑटोमेशन में महारत।",c1_t1:"n8n परिचय",c1_t2:"ऑटोमेशन वर्कफ़्लो",c1_t3:"API एकीकरण",c1_t4:"AI-संचालित ऑटोमेशन",c1_t5:"प्रोडक्शन डिप्लॉयमेंट",
+  c2_h3:"शुरुआती के लिए MCP",c2_p:"Model Context Protocol सीखें और अगली पीढ़ी के AI एकीकरण बनाएं।",c2_t1:"MCP मूल बातें",c2_t2:"MCP आर्किटेक्चर",c2_t3:"AI टूल्स कनेक्ट करना",c2_t4:"संदर्भ-जागरूक एजेंट",c2_t5:"वास्तविक दुनिया के अनुप्रयोग",
+  c3_h3:"AI एजेंट बनाना",c3_p:"तर्क करने, योजना बनाने और कार्य करने में सक्षम AI एजेंट बनाएं।",c3_t1:"एजेंट मूल बातें",c3_t2:"Prompt Engineering",c3_t3:"Tool Calling & मेमोरी",c3_t4:"मल्टी-एजेंट आर्किटेक्चर",c3_t5:"प्रोडक्शन डिप्लॉयमेंट",
+  c4_h3:"IoT फाउंडेशन",c4_p:"सेंसर, Arduino और ESP32 के साथ अपना पहला स्मार्ट डिवाइस बनाएं।",c4_t1:"IoT मूल बातें",c4_t2:"सेंसर और एक्चुएटर",c4_t3:"Arduino और ESP32",c4_t4:"MQTT प्रोटोकॉल",c4_t5:"क्लाउड कनेक्टिविटी",
+  c5_h3:"IoT आर्किटेक्चर",c5_p:"स्केलेबल IoT सिस्टम के लिए नेटवर्क, डेटा और क्लाउड एकीकरण।",c5_t1:"IoT सिस्टम डिज़ाइन",c5_t2:"संचार प्रोटोकॉल",c5_t3:"Edge-to-Cloud आर्किटेक्चर",c5_t4:"डेटा प्रबंधन",c5_t5:"सुरक्षा सर्वोत्तम प्रथाएं",
+  c6_h3:"IIoT में महारत",c6_p:"एज कंप्यूटिंग, सुरक्षा और स्केलेबल औद्योगिक IoT में AI।",c6_t1:"औद्योगिक IoT आर्किटेक्चर",c6_t2:"Edge Computing & AI",c6_t3:"औद्योगिक प्रोटोकॉल",c6_t4:"साइबर सुरक्षा",c6_t5:"स्केलेबल डिप्लॉयमेंट",
+  btn_enroll:"अभी नामांकन करें →",
+  reg_tag:"पाठ्यक्रम पंजीकरण",reg_h2:"पाठ्यक्रम के लिए पंजीकरण करें",reg_p:"नीचे दिया फ़ॉर्म भरें। हम 24 घंटे में नामांकन की पुष्टि करेंगे।",reg_how:"पंजीकरण कैसे करें",
+  step1:"Academy अनुभाग से अपना पाठ्यक्रम चुनें",step2:"अभी पंजीकरण करें बटन पर क्लिक करें",step3:"खुलने वाले Google फ़ॉर्म में अपनी जानकारी भरें",step4:"फ़ॉर्म सबमिट करें और पुष्टि ईमेल प्राप्त करें",
+  enroll_cta_h:"नामांकन के लिए तैयार हैं?",enroll_cta_p:"पंजीकरण फ़ॉर्म खोलने के लिए नीचे क्लिक करें। इसमें 2 मिनट से कम समय लगेगा।",enroll_cta_btn:"अभी पंजीकरण करें →",enroll_cta_note:"नए टैब में खुलेगा · Google Forms",
+  f_subject:"विषय *",f_message:"संदेश *",
+  why_tag:"हमें क्यों चुनें",why_h2:"रियासा लैब्स क्यों?",why_p:"अर्थपूर्ण परिणाम देने के लिए तकनीकी गहराई और डोमेन विशेषज्ञता।",
+  w1_h3:"उद्योग विशेषज्ञता",w1_p:"AI, IoT, ऊर्जा प्रबंधन और डिजिटल परिवर्तन में गहरा अनुभव।",
+  w2_h3:"व्यावहारिक शिक्षा",w2_p:"वास्तविक दुनिया की परियोजनाओं पर आधारित प्रशिक्षण।",
+  w3_h3:"नवाचार-प्रेरित",w3_p:"मापने योग्य व्यावसायिक परिणाम देने पर केंद्रित अत्याधुनिक तकनीकें।",
+  w4_h3:"स्थिरता केंद्रित",w4_p:"संगठनों को उनके Net Zero और ESG लक्ष्य प्राप्त करने में मदद करना।",
+  con_tag:"संपर्क करें",con_h2:"मिलकर भविष्य बनाएं",con_p:"कोई परियोजना, प्रशिक्षण आवश्यकता या व्यावसायिक चुनौती है? हमारी टीम मदद के लिए तैयार है।",
+  con_info_h3:"संपर्क जानकारी",con_info_p:"ईमेल द्वारा संपर्क करें या फ़ॉर्म का उपयोग करें — हम एक व्यावसायिक दिन में उत्तर देते हैं।",
+  con_email_lbl:"ईमेल",con_web_lbl:"वेबसाइट",con_srv_lbl:"हमारी सेवाएं",
+  srv1:"AI परामर्श",srv2:"AI एजेंट",srv3:"स्मार्ट बिल्डिंग",srv4:"सौर विश्लेषण",srv5:"IoT प्लेटफ़ॉर्म",srv6:"कॉर्पोरेट प्रशिक्षण",con_submit:"संदेश भेजें"
+}};
+
+// ═══════════════════════════════════════════
+// AI NET CANVAS (Consultancy card)
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('aiNetCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d'), W=280, H=65;
+  const layers=[
+    [{x:16,y:12},{x:16,y:30},{x:16,y:48},{x:16,y:62}],
+    [{x:90,y:18},{x:90,y:36},{x:90,y:54}],
+    [{x:170,y:22},{x:170,y:44}],
+    [{x:252,y:33}]
+  ];
+  let f=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H); f++;
+    for(let l=0;l<layers.length-1;l++){
+      for(const a of layers[l]){
+        for(const b of layers[l+1]){
+          const sig=Math.sin(f*.04+a.x*.018+b.y*.028);
+          const active=sig>.18;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=active?'rgba(139,92,246,.55)':'rgba(75,95,255,.1)';
+          ctx.lineWidth=active?1.2:.45; ctx.stroke();
+          if(active&&Math.random()<.03){
+            const t=((f*1.8)%70)/70;
+            const px=a.x+(b.x-a.x)*t, py=a.y+(b.y-a.y)*t;
+            ctx.beginPath(); ctx.arc(px,py,2,0,Math.PI*2);
+            ctx.fillStyle='rgba(0,212,255,.95)'; ctx.fill();
+          }
+        }
+      }
+    }
+    for(const layer of layers){
+      for(const n of layer){
+        const g=Math.sin(f*.04+n.x*.1+n.y*.07);
+        ctx.beginPath(); ctx.arc(n.x,n.y,4,0,Math.PI*2);
+        ctx.fillStyle=`rgba(139,92,246,${.52+g*.36})`;
+        ctx.shadowBlur=9; ctx.shadowColor='rgba(139,92,246,.5)'; ctx.fill();
+        ctx.shadowBlur=0;
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══════════════════════════════════════════
+// SUSTAINABILITY GAUGES (Smart Building Control product)
+// ═══════════════════════════════════════════
+(function(){
+  const c=document.getElementById('sustainCanvas');
+  if(!c) return;
+  const ctx=c.getContext('2d'), W=c.width, H=c.height;
+  const gauges=[
+    {lbl:'Energy',  val:.88, col:'75,95,255',  cx:46},
+    {lbl:'Carbon',  val:.76, col:'0,212,255',   cx:130},
+    {lbl:'ESG Score',val:.93,col:'139,92,246', cx:214}
+  ];
+  let prog=0, started=false;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    prog=Math.min(prog+.016,1);
+    const isLight=document.documentElement.classList.contains('light');
+    gauges.forEach(g=>{
+      const r=27, cy=H/2+3;
+      // Track
+      ctx.beginPath(); ctx.arc(g.cx,cy,r,-Math.PI*.75,Math.PI*.75);
+      ctx.strokeStyle=isLight?'rgba(75,95,255,.12)':'rgba(255,255,255,.08)';
+      ctx.lineWidth=6; ctx.lineCap='round'; ctx.stroke();
+      // Fill
+      const end=-Math.PI*.75+Math.PI*1.5*g.val*prog;
+      ctx.beginPath(); ctx.arc(g.cx,cy,r,-Math.PI*.75,end);
+      ctx.strokeStyle=`rgba(${g.col},.92)`;
+      ctx.lineWidth=6; ctx.lineCap='round'; ctx.stroke();
+      // Value text
+      ctx.font='bold 10px Inter'; ctx.textAlign='center';
+      ctx.fillStyle=`rgba(${g.col},1)`;
+      ctx.fillText(Math.round(g.val*prog*100)+'%',g.cx,cy+4);
+      // Label
+      ctx.font='8px Inter';
+      ctx.fillStyle=isLight?'rgba(10,10,15,.4)':'rgba(255,255,255,.38)';
+      ctx.fillText(g.lbl,g.cx,H-2);
+    });
+    if(prog<1) requestAnimationFrame(draw);
+  }
+  const obs=new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting&&!started){started=true;draw();obs.disconnect();}
+  },{threshold:.3});
+  obs.observe(c);
+})();
+
+
+function setLang(lang){
+  const sel=document.getElementById('langSelect');
+  if(sel) sel.value=lang;
+  const dict=T[lang]||T.en;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(dict[k]) el.textContent=dict[k];
+  });
+  document.documentElement.lang=lang==='ta'?'ta':lang==='hi'?'hi':'en';
+}
+</script>
+</body>
+</html>
